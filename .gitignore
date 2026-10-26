@@ -1,0 +1,23 @@
+# Cache local de los clones upstream (se reconstruye sola)
+.cache/
+
+# ---- graphify: lo generado que NO se versiona ----
+# graph.json pesa ~65 MB y es 100% regenerable a partir del código vendorizado:
+#   make graph        (≈4 min, AST local, sin API key, sin coste)
+# Se versionan en cambio GRAPH_REPORT.md, wiki/ y graph.html, que son los que
+# permiten a un agente orientarse gastando poquísimos tokens.
+graphify-out/graph.json
+graphify-out/manifest.json
+graphify-out/cache/
+graphify-out/memory/
+graphify-out/reflections/
+graphify-out/.graphify_manifest.json
+graphify-out/.graphify_analysis.json
+graphify-out/.graphify_root
+
+# Basura típica
+.DS_Store
+*.pyc
+__pycache__/
+.venv/
+node_modules/

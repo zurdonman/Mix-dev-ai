@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "$comment": "Manifiesto de repos upstream vendorizados en Mix-dev-ai. Edita aquí para añadir/quitar repos, cambiar ramas, fijar commits o ajustar qué se copia. Lo consume scripts/sync-upstream.py",
+  "cache_dir": ".cache/upstream",
+  "state_file": ".upstream-state.json",
+  "default_profile": "lean",
+  "fetch_depth": 1,
+
+  "$profiles": "lean = copia útil por defecto (sin media, traducciones ni JSON generado); slim = sólo código fuente; full = todo el repo tal cual",
+  "profiles": {
+    "full": {
+      "groups": ["_vcs"],
+      "max_bytes": null
+    },
+    "lean": {
+      "groups": ["_vcs", "_junk", "_media", "_fonts", "_locales", "_generated_docs"],
+      "max_bytes": 2097152
+    },
+    "slim": {
+      "groups": ["_vcs", "_junk", "_media", "_fonts", "_locales", "_generated_docs", "_tests", "_docs", "_examples"],
+      "max_bytes": 524288
+    }
+  },
+
+  "$groups": "Grupos reutilizables de patrones glob. Un grupo se aplica a todos los repos que lo referencian.",
+  "groups": {
+    "_vcs": [
+      ".git/**",
+      "**/.github/workflows/**",
+      "**/.gitattributes",
+      "**/.gitignore",
+      "**/.DS_Store",
+      "**/.editorconfig",
+      "**/.gitmodules"
+    ],
+    "_junk": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/out/**",
+      "**/coverage/**",
+      "**/.next/**",
+      "**/.turbo/**",
+      "**/.cache/**",
+      "**/__pycache__/**",
+      "**/*.pyc",
+      "**/.venv/**",
+      "**/venv/**",
+      "**/.pytest_cache/**",
+      "**/.mypy_cache/**",
+      "**/.ruff_cache/**",
+      "**/target/**"
+    ],
+    "_media": [
+      "**/*.png",
+      "**/*.jpg",
+      "**/*.jpeg",
+      "**/*.gif",
+      "**/*.webp",
+      "**/*.avif",
+      "**/*.bmp",
+      "**/*.ico",
+      "**/*.svgz",
+      "**/*.mp4",
+      "**/*.mov",
+      "**/*.webm",
+      "**/*.mkv",
+      "**/*.wav",
+      "**/*.mp3",
+      "**/*.ogg",
+      "**/*.flac",
+      "**/*.pdf",
+      "**/*.zip",
+      "**/*.7z",
+      "**/*.glb",
+      "**/*.gltf",
+      "**/*.fbx",
+      "**/*.obj",
+      "**/*.psd",
+      "**/*.xcf"
+    ],
+    "_fonts": [
+      "**/*.ttf",
+      "**/*.otf",
+      "**/*.woff",
+      "**/*.woff2",
+      "**/*.eot"
+    ],
+    "_locales": [
+      "**/*.po",
+      "**/*.pot",
+      "**/*.mo",
+      "website/locales/**"
+    ],
+    "_generated_docs": [
+      "**/docs/releases/*.contributions.json",
+      "docs/verification/**",
+      "**/CHANGELOG.md"
+    ],
+    "_tests": [
+      "tests/**",
+      "test/**",
+      "**/tests/**",
+      "**/__tests__/**",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.test.js",
+      "**/*.test.py",
+      "**/*.spec.ts",
+      "**/*.spec.js",
+      "**/*.spec.py"
+    ],
+    "_docs": [
+      "docs/**",
+      "website/**",
+      "**/docs/**",
+      "**/*.md"
+    ],
+    "_examples": [
+      "examples/**",
+      "**/examples/**",
+      "experiments/**",
+      "**/samples/**"
+    ]
+  },
+
+  "$repos": "Cada entrada = una carpeta vendorizada. 'path' es la carpeta destino dentro de este repo.",
+  "repos": [
+    {
+      "name": "universal-modder",
+      "path": "universal-modder",
+      "url": "https://github.com/rehan-remade/universal-modder",
+      "branch": "main",
+      "pin": null,
+      "description": "Skills, herramientas y MCP (fal) para modear casi cualquier juego de PC con Claude Code: reconocimiento, ingeniería inversa, assets generados y testing in-game.",
+      "groups": [],
+      "exclude": [],
+      "keep": []
+    },
+    {
+      "name": "rea",
+      "path": "rea",
+      "url": "https://github.com/morluto/rea",
+      "branch": "main",
+      "pin": null,
+      "description": "Reverse engineer anything with agents: del comportamiento de una app hasta binarios nativos (Ghidra, Hopper, IDA, MCP).",
+      "groups": [],
+      "exclude": [],
+      "keep": []
+    }
+  ]
+}

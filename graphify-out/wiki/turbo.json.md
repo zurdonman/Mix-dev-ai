@@ -1,0 +1,30 @@
+# turbo.json
+
+> 6 nodes · cohesion 0.33
+
+## Key Concepts
+
+- **turbo.json** (6 connections) — `rea/turbo.json`
+- **cacheMaxAge** (1 connections) — `rea/turbo.json`
+- **cacheMaxSize** (1 connections) — `rea/turbo.json`
+- **globalDependencies** (1 connections) — `rea/turbo.json`
+- **globalPassThroughEnv** (1 connections) — `rea/turbo.json`
+- **$schema** (1 connections) — `rea/turbo.json`
+
+## Relationships
+
+- [tasks](tasks.md) (1 shared connections)
+
+## Source Files
+
+- `rea/turbo.json`
+
+## Audit Trail
+
+- EXTRACTED: 6 (100%)
+- INFERRED: 0 (0%)
+- AMBIGUOUS: 0 (0%)
+
+---
+
+*Part of the graphify knowledge wiki. See [index](index.md) to navigate.*

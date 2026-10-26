@@ -1,0 +1,3 @@
+# Herramientas necesarias para regenerar el grafo de código.
+#   pip install -r requirements-tools.txt
+graphifyy==0.9.95
