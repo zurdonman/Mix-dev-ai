@@ -20,6 +20,8 @@ Mix-dev-ai/
 │   ├── build-graph.sh             reconstruye el grafo
 │   └── graph-report.py            regenera informe + HTML + wiki
 ├── .github/workflows/sync-and-graph.yml   actualización automática nocturna
+├── docs/
+│   └── adb-android.md         ← guía: ADB desde el móvil con Termux (sin PC)
 └── Makefile                   ← atajos: make check / sync / graph / refresh
 ```
 
@@ -222,6 +224,7 @@ Las que de verdad encajan con “modear juegos + ingeniería inversa + agentes�
 | **[Renovate](https://github.com/renovatebot/renovate)** | Mantiene actualizadas dependencias *de este repo* (no del código vendorizado): equivalente automático a lo que hace `make sync`. |
 | **[git-lfs](https://github.com/git-lfs/git-lfs)** | Solo si algún día quieres el perfil `full` con `.glb`/`.jpg` grandes de `universal-modder`. |
 | **[pre-commit](https://github.com/pre-commit/pre-commit)** | Engancha `make check` y un `graphify update .` a cada commit, sin depender de Actions. |
+| **ADB vía Termux** | Depurar/controlar otro Android sin PC: [docs/adb-android.md](docs/adb-android.md) y `scripts/termux-adb-pair.sh`. |
 
 MCP que ya vienen con las herramientas copiadas (no hay que añadir nada):
 

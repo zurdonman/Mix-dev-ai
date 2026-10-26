@@ -38,6 +38,11 @@ Mix-dev-ai/
    de repos ajenos y la siguiente sincronización (`make sync`) las sobreescribirá. Si necesitas
    un cambio permanente, ponlo en una carpeta propia fuera de esas dos.
 
+## Extras
+
+- `docs/adb-android.md` + `scripts/termux-adb-pair.sh`: ADB inalámbrico desde Termux
+  (`pkg install android-tools`, `adb pair`, `adb connect`). No confundir con `sdb`, que es de Tizen.
+
 ## Comandos
 
 ```bash
