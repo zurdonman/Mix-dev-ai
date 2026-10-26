@@ -1,0 +1,112 @@
+name: sync-upstream-and-graph
+
+# Mantiene las copias vendorizadas al día de sus repos originales y regenera
+# el grafo de código cuando algo cambia. Así el grafo nunca se desactualiza.
+#
+# Se ejecuta solo cada noche, y tú puedes lanzarlo a mano desde la pestaña
+# Actions -> "sync-upstream-and-graph" -> Run workflow.
+
+on:
+  schedule:
+    - cron: '23 4 * * *'
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Perfil de copia (lean | slim | full)'
+        required: false
+        default: 'lean'
+        type: choice
+        options: [lean, slim, full]
+      mode:
+        description: 'Modo del grafo'
+        required: false
+        default: 'code'
+        type: choice
+        options: [code, deep]
+      force:
+        description: 'Reconstruir aunque no haya cambios'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-upstream-and-graph
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: requirements-tools.txt
+
+      - name: Instalar graphify
+        run: pip install -r requirements-tools.txt
+
+      - name: Configurar git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Sincronizar repos upstream
+        id: sync
+        env:
+          PROFILE: ${{ inputs.profile || 'lean' }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          args=(--profile "$PROFILE")
+          if [ "$FORCE" = "true" ]; then args+=(--force); fi
+          python3 scripts/sync-upstream.py "${args[@]}" | tee sync.log
+
+      - name: ¿Cambió algo?
+        id: changes
+        run: |
+          if [ -n "$(git status --porcelain -- universal-modder rea .upstream-state.json upstream.json)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          elif [ "${{ inputs.force }}" = "true" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Reconstruir el grafo de código
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GRAPHIFY_MAX_WORKERS: '4'
+          GRAPHIFY_NO_LABEL: '1'
+        run: ./scripts/build-graph.sh ${{ inputs.mode || 'code' }}
+
+      - name: Commit y push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git add -A -- universal-modder rea .upstream-state.json upstream.json graphify-out
+          git status --short | head -40
+          if git diff --cached --quiet; then
+            echo "sin cambios que commitear"
+            exit 0
+          fi
+          sha_um=$(python3 -c "import json;print(json.load(open('.upstream-state.json'))['repos']['universal-modder']['commit'][:8])" 2>/dev/null || echo "?")
+          sha_rea=$(python3 -c "import json;print(json.load(open('.upstream-state.json'))['repos']['rea']['commit'][:8])" 2>/dev/null || echo "?")
+          git commit -m "chore(upstream): sync universal-modder@${sha_um} rea@${sha_rea} + grafo" \
+                     -m "Generado por .github/workflows/sync-and-graph.yml"
+          git push
+
+      - name: Resumen
+        if: always()
+        run: |
+          {
+            echo "### Sync upstream"
+            echo '```'
+            cat sync.log 2>/dev/null || echo "(sin log)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

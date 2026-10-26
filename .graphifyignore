@@ -1,0 +1,54 @@
+# graphify respeta este archivo (además de .gitignore) al construir el grafo.
+# Todo lo que se excluya aquí no entra en graph.json: menos ruido, menos nodos,
+# menos tokens cuando el agente consulte el grafo.
+
+# ---- infraestructura propia de este repo ----
+# (los propios scripts de sync/build están documentados en README.md y AGENTS.md;
+#  indexarlos añadiría ruido sin valor: el interés está en las dos herramientas)
+.cache/
+graphify-out/
+.upstream-state.json
+scripts/
+.github/
+LICENSE
+
+# ---- media y binarios: no aportan nodos de código ----
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.webp
+**/*.ico
+**/*.mp4
+**/*.mov
+**/*.webm
+**/*.wav
+**/*.mp3
+**/*.ogg
+**/*.pdf
+**/*.zip
+**/*.glb
+**/*.gltf
+**/*.fbx
+**/*.ttf
+**/*.otf
+**/*.woff
+**/*.woff2
+
+# ---- traducciones y documentación generada ----
+**/website/locales/**
+**/*.po
+**/*.pot
+**/docs/releases/*.contributions.json
+**/docs/verification/**
+
+# ---- lockfiles y carpetas generadas ----
+**/package-lock.json
+**/pnpm-lock.yaml
+**/yarn.lock
+**/node_modules/**
+**/dist/**
+**/build/**
+**/coverage/**
+**/__pycache__/**
+**/.venv/**

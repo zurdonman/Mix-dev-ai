@@ -1,0 +1,14 @@
+# El código vendorizado no cuenta como "lenguaje del repo" en GitHub ni en los
+# diffs por defecto, para que tus estadísticas y tus PRs sigan siendo legibles.
+universal-modder/** linguist-vendored
+rea/** linguist-vendored
+
+# Salidas generadas automáticamente
+graphify-out/** linguist-generated
+.upstream-state.json linguist-generated
+
+# Normalización de finales de línea
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.glb binary
